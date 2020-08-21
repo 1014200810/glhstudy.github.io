@@ -1,0 +1,120 @@
+<!--
+ * @Description: 
+ * @Version: 2.0
+ * @Autor: 葛璐豪
+ * @Date: 2020-08-21 14:59:16
+ * @LastEditors: Seven
+ * @LastEditTime: 2020-08-21 18:20:17
+-->
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset = "utf-8">
+        <title>button</title>
+    </head>
+    <body>
+        <div id = "filed" onclick = "change(event)" style="position: relative; width:300px; height:200px; margin:0px; border:black solid thin">
+            <img src = "ground.jpg" style = "position: absolute; width:300px; height:200px; top:0px;left:0px; ">
+            <img id = "ball" src = "ball.jpg" style = "position: absolute; margin:0px; padding:0px;width:30px; height:30px; top:0px; left:0px ;transition: 1s all; ">
+        </div>
+        <button id ="ele">display</button>
+        <div id = "text">text</div>
+        <button onclick = "zhedie(event)" style = "outline:none">click me</button>
+        <ul id = "menu">
+            <li>this </li>
+            <li>cd </li>
+            <li>as </li>
+            <li>aa </li>
+        </ul>
+        <!--            <button style = "position:absolute; top:40px;left:0px">on</button>
+            <button style = "position:absolute; top:40px;left:350px">down</button>-->
+        <div style = "position: relative;padding:0px 40px ; margin:20px; width:340px;border:red solid medium;">
+            <button id = "up" style = "position:absolute; top:40px;left:0px">上</button>
+            <button id = "down" style = "position:absolute; top:40px;left:380px">下</button>
+            <div id = "carousel" style = "width: 320px; height:100px;margin:0px; padding:0px;overflow:hidden">
+                <ul id = "pictureul" style = "margin:0px;margin-left:0px; padding:0px;border:mediumaquamarine thin solid">
+                    <li style = "display: inline-block;"><img src = "ball.jpg" style = "width: 100px; height:100px"></li>
+                    <li style = "display: inline-block;"><img src = "ground.jpg" style = "width: 100px; height:100px"></li>
+                    <li style = "display: inline-block;"><img src = "three.jpg" style = "width: 100px; height:100px"></li>
+                    <li style = "display: inline-block;"><img src = "four.jpg" style = "width: 100px; height:100px"></li>
+                    <li style = "display: inline-block;"><img src = "five.jpg" style = "width: 100px; height:100px"></li>
+                    <li style = "display: inline-block;"><img src = "six.jpg" style = "width: 100px; height:100px"></li>
+                    <li style = "display: inline-block;"><img src = "seven.jpg" style = "width: 100px; height:100px"></li>
+                </ul>
+                <button style = "display: inline-block;">click</button>
+            </div>
+        </div>
+
+        <article class = "pane" style = "border:solid red thin;background-color:yellow">
+            <h1>a Explorer 9</h1>
+            <p>Windows Internet Explorer 9（简称 IE9）于 2011 年 3 月 14 日发布.....</p>
+          </article>
+
+          <article class = "pane" style = "border:solid red thin;background-color:yellow">
+            <h1>b Explorer 9</h1>
+            <p>Windows Internet Explorer 9（简称 IE9）于 2011 年 3 月 14 日发布.....</p>
+          </article>
+
+          <article class = "pane" style = "border:solid red thin;background-color:yellow">
+            <h1>c Explorer 9</h1>
+            <p>Windows Internet Explorer 9（简称 IE9）于 2011 年 3 月 14 日发布.....</p>
+          </article>
+
+        <script>
+            function display(){
+                let key = true;
+                return function(){
+                    if(key){
+                        text.style.display = 'none';
+                        ele.innerHTML= "none-display";
+                    }else{
+                        text.style.display = '';
+                        ele.innerHTML= "display";                  
+                    }
+                    key = !key;
+                }
+            }
+            ele.onclick = display();
+            function change(event){
+                let left = Math.round(event.clientX - filed.offsetLeft - filed.clientLeft - ball.clientWidth / 2);
+                let top = Math.round(event.clientY- filed.offsetTop - filed.clientTop - ball.clientHeight / 2);
+                if(left<0) left = 0; if(top<0) top = 0;
+                if(left>filed.clientWidth - ball.clientWidth) left = filed.clientWidth - ball.clientWidth;
+                if(top> filed.clientHeight - ball.clientHeight) top = filed.clientHeight - ball.clientHeight;
+                ball.style.left = left+ 'px';
+                ball.style.top = top + 'px';
+            }
+            var isAN = true;
+            function zhedie(event){
+                if(isAN){
+                    menu.style.display = "none";
+                }
+                else{
+                    menu.style.display = "";
+                }
+                isAN = !isAN;
+            }
+            let paneAll = document.body.querySelectorAll(".pane");
+            for(let pane of paneAll){
+                pane.insertAdjacentHTML("afterbegin", '<button class="remove-button" style = "float:right">[x]</button>');
+            }
+            let closeAll = document.body.querySelectorAll(".remove-button");
+            for(let close of closeAll){
+                close.onclick = function(){
+                    close.parentNode.remove();
+                }
+            }
+            var MAX_LI = pictureul.querySelectorAll("li").length;
+            up.onclick = function(){
+                if(parseInt(pictureul.style.marginLeft) + 315 <= 0){
+                    pictureul.style.marginLeft = parseInt(pictureul.style.marginLeft)+315 + "px";
+                }
+            }
+            down.onclick = function(){
+                if(parseInt(pictureul.style.marginLeft) - 315 > -MAX_LI*105){
+                    pictureul.style.marginLeft = parseInt(pictureul.style.marginLeft) - 315 + "px";
+                }
+            }
+        </script>
+    </body>
+</html>
