@@ -4,13 +4,41 @@
  * @Autor: 葛璐豪
  * @Date: 2020-08-21 14:59:16
  * @LastEditors: Seven
- * @LastEditTime: 2020-08-21 18:20:17
+ * @LastEditTime: 2020-08-21 18:51:45
 -->
 <!DOCTYPE html>
 <html>
     <head>
         <meta charset = "utf-8">
         <title>button</title>
+        <style>
+            #calendar {
+                margin-left: 200px;
+                border: solid 1px teal;
+                border-spacing: 0;
+            }
+    
+            .table_td {
+                border: solid thin black;
+                padding: 10px;
+            }
+    
+            #clock {
+                margin-left: 300px;
+            }
+    
+            .hour {
+                color: red;
+            }
+    
+            .min {
+                color: blue;
+            }
+    
+            .ss {
+                color: chartreuse;
+            }
+        </style>
     </head>
     <body>
         <div>点击球场任意位置实现球的移动</div>
@@ -20,7 +48,7 @@
         </div>
         <button id ="ele">display</button>
         <div id = "text">text</div>
-        <button onclick = "zhedie(event)" style = "outline:none">菜单隐藏与显示</button>
+        <button onclick = "zhedie(event)" style = "outline:none">click me</button>
         <ul id = "menu">
             <li>this </li>
             <li>cd </li>
@@ -45,6 +73,45 @@
                 <button style = "display: inline-block;">click</button>
             </div>
         </div>
+        
+        <!--上一天的-->
+        <ul id="container"></ul>
+        <table id="calendar"></table>
+        <div id="clock">
+            <span class="hour">hh</span>:<span class="min">mm</span>:<span class="sec">ss</span>
+        </div>
+    
+        <table id="pai">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Surname</th>
+                    <th>Age</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>John</td>
+                    <td>Smith</td>
+                    <td>10</td>
+                </tr>
+                <tr>
+                    <td>Pete</td>
+                    <td>Brown</td>
+                    <td>15</td>
+                </tr>
+                <tr>
+                    <td>Ann</td>
+                    <td>Lee</td>
+                    <td>5</td>
+                </tr>
+                <tr>
+                    <td>...</td>
+                    <td>...</td>
+                    <td>...</td>
+                </tr>
+            </tbody>
+        </table>
 
         <article class = "pane" style = "border:solid red thin;background-color:yellow">
             <h1>a Explorer 9</h1>
@@ -116,6 +183,243 @@
                     pictureul.style.marginLeft = parseInt(pictureul.style.marginLeft) - 315 + "px";
                 }
             }
+
+
+            /////////////上一天
+                    //列表树的建立
+        let data = {
+            "Fish": {
+                "trout": {},
+                "salmon": {}
+            },
+
+            "Tree": {
+                "Huge": {
+                    "sequoia": {},
+                    "oak": {}
+                },
+                "Flowering": {
+                    "apple tree": {},
+                    "magnolia": {}
+                }
+            }
+        };
+        /*
+        //第一种
+         <li>p
+            <ul>
+
+            </ul>
+         </li>
+         //第二种
+            <li>p</li>
+        */
+        function createTree(container, data) {
+            for (let p in data) {
+                //创建当前节点 
+                if (data[p] != null) { //非空就是个队列 <ul>finish<ul>tourish</ul>
+                    let li = document.createElement("li");
+                    li.prepend(p);
+                    container.append(li);
+                    let ul = document.createElement("ul");
+                    li.append(ul);
+                    createTree(ul, data[p]);
+                } else {
+                    let li = document.createElement("li");
+                    li.innerHTML = p;
+                    container.append(li);
+                }
+            }
+        }
+        createTree(container, data); //树已创建
+        //下来标出后代数量 container
+        for (let ele of container.querySelectorAll("li")) {
+            ele.firstChild.data += `  子节点 = ${ele.querySelectorAll("li").length}`;
+        }
+        //日历的建立
+        //日期建立
+
+        function createCalendar(calendar, year, month) {
+            let current_Date = new Date(year, month - 1, 1);
+            //标题建立
+            caption = document.createElement("caption");
+            caption.innerHTML = `${year}年${month}月 日历`;
+            calendar.append(caption);
+            //头建立
+            head = document.createElement("tr");
+            head.className = "tr";
+            head.innerHTML =
+                "<td><strong>MO</strong></td><td><strong>TU</strong></td><td><strong>WE</strong></td><td><strong>TH</strong></td><td><strong>FR</strong></td><td><strong>SA</strong></td><td><strong>SU</strong></td>";
+            calendar.append(head);
+            //获取一共多少天
+            let get_data = new Date(year, month, 0);
+            let All_days = get_data.getDate();
+            //6行建立
+            let tr = new Array;
+            for (let i = 0; i < 6; ++i) {
+                tr[i] = document.createElement("tr");
+                calendar.append(tr[i]);
+            }
+            //日期填充
+            let start_week = (current_Date.getDay() == 0 ? 7 : current_Date.getDay()) % 8;
+            //alert("start_week="+start_week);
+            for (let i = 1; i <= All_days; ++i) {
+                //第一行空的填充
+                //alert(i);
+                let td = document.createElement("td");
+                td.innerHTML = i;
+                if (i == 1) {
+                    for (let kong = 1; kong < start_week; ++kong) {
+                        let td_kong = document.createElement("td");
+                        tr[0].append(td_kong);
+                    }
+                    tr[0].append(td);
+                } else {
+                    tr[parseInt((start_week - 1) / 7)].append(td);
+                }
+                ++start_week;
+            }
+            //处理最后一行的空行
+            if ((start_week - 1) % 7 != 0) {
+                for (let i = (start_week % 7 == 0 ? 7 : start_week % 7); i <= 7; ++i) {
+                    let td = document.createElement("td");
+                    tr[parseInt((start_week - 1) / 7)].append(td);
+                }
+            }
+            //贴近类
+            tr = calendar.querySelectorAll("tr");
+            for (let ever of tr) {
+                ever.className = "table_td";
+            }
+            td = calendar.querySelectorAll("td");
+            for (let ever of td) {
+                ever.className = "table_td";
+            }
+        }
+        //方法1：类
+
+        class xun {
+            constructor(value) {
+                this.month = value;
+            }
+            change(calendar, year) {
+                calendar.innerHTML = "";
+                createCalendar(calendar, year, this.month);
+                this.month++;
+                if (this.month == 13) {
+                    this.month = 1;
+                }
+            }
+        }
+        let c = new xun(1);
+        setTimeout(function at() {
+            c.change(calendar, 2020);
+            setTimeout(at, 1000);
+        }, 1000);
+
+        //方法2：闭包
+        /*
+        function change() {
+            let month_time = 1;
+            return function () {
+                //alert(month_time);
+                calendar.innerHTML = "";
+                createCalendar(calendar, 2020, month_time);
+                month_time++;
+                if(month_time == 13){
+                    month_time = 1;
+                }
+                setTimeout(fchange,1000);
+            }
+        }
+        let fchange = change();
+        fchange();
+        */
+
+        //时钟
+        function times() {
+            let Current = new Date();
+            let hour = clock.querySelector(".hour");
+            let min = clock.querySelector(".min");
+            let sec = clock.querySelector(".sec");
+            hour.innerHTML = `${Current.getHours()}`;
+            min.innerHTML = `${Current.getMinutes()}`;
+            sec.innerHTML = `${Current.getSeconds()}`;
+        }
+
+        setInterval(times, 1000);
+
+        //排序
+        //方法1
+        /*
+        let sortedRows = Array.from(pai.tBodies[0].rows)
+        .sort((rowa,rowb)=>rowa.cells[0].innerHTML.localeCompare(rowb.cells[0].innerHTML));
+        pai.tBodies[0].append(...sortedRows);
+        */
+        //方法2
+        let tbody = pai.querySelector("tbody");
+        let tr_arry = Array.from(tbody.querySelectorAll("tr"));
+        tr_arry.sort((rowa, rowb) => rowa.cells[0].innerHTML.localeCompare(rowb.cells[0].innerHTML));
+        tbody.append(...tr_arry);
+
+        //创建临时通知
+        let notion = document.createElement("div");
+        notion.className = "welcome";
+        notion.style.cssText = `position:absolute;
+                                top:10px;
+                                right:80px;
+                                background-color:red;
+                                text-align:center;
+                                padding:5px;
+                             `;
+        notion.innerHTML = "hello";
+        document.body.append(notion);
+        //闪烁通知
+        function atk(notion) {
+            let cnt = 1;
+            let booler = true;
+            return function lett() {
+                notion.innerHTML = `hello ${cnt}`;
+                if (booler) {
+                    notion.style.display = "";
+                    cnt++;
+                } else {
+                    notion.style.display = "none";
+                }
+                booler = !booler;
+                setTimeout(lett, 1000);
+            }
+        }
+        setTimeout(atk(notion), 1000);
+        //放中间
+        ball.style.left = Math.round(ground.clientWidth / 2 - ball.clientWidth / 2) + 'px';
+        ball.style.top = Math.round(ground.clientHeight / 2 - ball.clientHeight / 2) + 'px';
+
+        // 获取元素的文档坐标
+        function getCoords(elem) {
+            let box = elem.getBoundingClientRect();
+
+            return {
+                top: box.top + window.pageYOffset,
+                right: box.right + window.pageXOffset,
+                bottom: box.bottom + window.pageYOffset,
+                left: box.left + window.pageXOffset
+            };
+        }
+
+        function createMessageUnder(elem, html) {
+            let message = document.createElement('div');
+            message.style.cssText = "position:fixed; color: red";
+
+            let coords = getCoords(elem);
+
+            message.style.left = coords.left + "px";
+            message.style.top = coords.bottom + "px";
+
+            message.innerHTML = html;
+
+            return message;
+        }
         </script>
     </body>
 </html>
