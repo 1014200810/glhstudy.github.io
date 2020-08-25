@@ -4,189 +4,274 @@
  * @Autor: 葛璐豪
  * @Date: 2020-08-21 14:59:16
  * @LastEditors: Seven
- * @LastEditTime: 2020-08-21 18:51:45
+ * @LastEditTime: 2020-08-25 20:34:21
 -->
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset = "utf-8">
-        <title>button</title>
-        <style>
-            #calendar {
-                margin-left: 200px;
-                border: solid 1px teal;
-                border-spacing: 0;
-            }
-    
-            .table_td {
-                border: solid thin black;
-                padding: 10px;
-            }
-    
-            #clock {
-                margin-left: 300px;
-            }
-    
-            .hour {
-                color: red;
-            }
-    
-            .min {
-                color: blue;
-            }
-    
-            .ss {
-                color: chartreuse;
-            }
-        </style>
-    </head>
-    <body>
-        <div>点击球场任意位置实现球的移动</div>
-        <div id = "filed" onclick = "change(event)" style="position: relative; width:300px; height:200px; margin:0px; border:black solid thin">
-            <img src = "ground.jpg" style = "position: absolute; width:300px; height:200px; top:0px;left:0px; ">
-            <img id = "ball" src = "ball.jpg" style = "position: absolute; margin:0px; padding:0px;width:30px; height:30px; top:0px; left:0px ;transition: 1s all; ">
-        </div>
-        <button id ="ele">display</button>
-        <div id = "text">text</div>
-        <button onclick = "zhedie(event)" style = "outline:none">click me</button>
-        <ul id = "menu">
-            <li>this </li>
-            <li>cd </li>
-            <li>as </li>
-            <li>aa </li>
-        </ul>
-        <!--            <button style = "position:absolute; top:40px;left:0px">on</button>
+
+<head>
+    <meta charset="utf-8">
+    <title>button</title>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <style>
+        .text {
+            font-size: 10px;
+        }
+
+        #calendar {
+            margin-left: 200px;
+            border: solid 1px teal;
+            border-spacing: 0;
+        }
+
+        .table_td {
+            border: solid thin black;
+            padding: 10px;
+        }
+
+        #clock {
+            margin-left: 300px;
+        }
+
+        .hour {
+            color: red;
+        }
+
+        .min {
+            color: blue;
+        }
+
+        .ss {
+            color: chartreuse;
+        }
+    </style>
+</head>
+
+<body>
+    <p class = "button">点击它 点击它！</p>
+    <svg></svg>
+    <div>点击球场任意位置实现球的移动</div>
+    <div id="filed" onclick="change(event)"
+        style="position: relative; width:300px; height:200px; margin:0px; border:black solid thin">
+        <img src="ground.jpg" style="position: absolute; width:300px; height:200px; top:0px;left:0px; ">
+        <img id="ball" src="ball.jpg"
+            style="position: absolute; margin:0px; padding:0px;width:30px; height:30px; top:0px; left:0px ;transition: 1s all; ">
+    </div>
+    <button id="ele">display</button>
+    <div id="text">text</div>
+    <button onclick="zhedie(event)" style="outline:none">click me</button>
+    <ul id="menu">
+        <li>this </li>
+        <li>cd </li>
+        <li>as </li>
+        <li>aa </li>
+    </ul>
+    <!--            <button style = "position:absolute; top:40px;left:0px">on</button>
             <button style = "position:absolute; top:40px;left:350px">down</button>-->
-        <div style = "position: relative;padding:0px 40px ; margin:20px; width:340px;border:red solid medium;">
-            <button id = "up" style = "position:absolute; top:40px;left:0px">上</button>
-            <button id = "down" style = "position:absolute; top:40px;left:380px">下</button>
-            <div id = "carousel" style = "width: 320px; height:100px;margin:0px; padding:0px;overflow:hidden">
-                <ul id = "pictureul" style = "margin:0px;margin-left:0px; padding:0px;border:mediumaquamarine thin solid">
-                    <li style = "display: inline-block;"><img src = "ball.jpg" style = "width: 100px; height:100px"></li>
-                    <li style = "display: inline-block;"><img src = "ground.jpg" style = "width: 100px; height:100px"></li>
-                    <li style = "display: inline-block;"><img src = "three.jpg" style = "width: 100px; height:100px"></li>
-                    <li style = "display: inline-block;"><img src = "four.jpg" style = "width: 100px; height:100px"></li>
-                    <li style = "display: inline-block;"><img src = "five.jpg" style = "width: 100px; height:100px"></li>
-                    <li style = "display: inline-block;"><img src = "six.jpg" style = "width: 100px; height:100px"></li>
-                    <li style = "display: inline-block;"><img src = "seven.jpg" style = "width: 100px; height:100px"></li>
-                </ul>
-                <button style = "display: inline-block;">click</button>
-            </div>
+    <div style="position: relative;padding:0px 40px ; margin:20px; width:340px;border:red solid medium;">
+        <button id="up" style="position:absolute; top:40px;left:0px">上</button>
+        <button id="down" style="position:absolute; top:40px;left:380px">下</button>
+        <div id="carousel" style="width: 320px; height:100px;margin:0px; padding:0px;overflow:hidden">
+            <ul id="pictureul" style="margin:0px;margin-left:0px; padding:0px;border:mediumaquamarine thin solid">
+                <li style="display: inline-block;"><img src="ball.jpg" style="width: 100px; height:100px"></li>
+                <li style="display: inline-block;"><img src="ground.jpg" style="width: 100px; height:100px"></li>
+                <li style="display: inline-block;"><img src="three.jpg" style="width: 100px; height:100px"></li>
+                <li style="display: inline-block;"><img src="four.jpg" style="width: 100px; height:100px"></li>
+                <li style="display: inline-block;"><img src="five.jpg" style="width: 100px; height:100px"></li>
+                <li style="display: inline-block;"><img src="six.jpg" style="width: 100px; height:100px"></li>
+                <li style="display: inline-block;"><img src="seven.jpg" style="width: 100px; height:100px"></li>
+            </ul>
+            <button style="display: inline-block;">click</button>
         </div>
-        
-        <!--上一天的-->
-        <ul id="container"></ul>
-        <table id="calendar"></table>
-        <div id="clock">
-            <span class="hour">hh</span>:<span class="min">mm</span>:<span class="sec">ss</span>
-        </div>
+    </div>
+
+    <!--上一天的-->
+    <ul id="container"></ul>
+    <table id="calendar"></table>
+    <div id="clock">
+        <span class="hour">hh</span>:<span class="min">mm</span>:<span class="sec">ss</span>
+    </div>
+
+    <table id="pai">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Surname</th>
+                <th>Age</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>John</td>
+                <td>Smith</td>
+                <td>10</td>
+            </tr>
+            <tr>
+                <td>Pete</td>
+                <td>Brown</td>
+                <td>15</td>
+            </tr>
+            <tr>
+                <td>Ann</td>
+                <td>Lee</td>
+                <td>5</td>
+            </tr>
+            <tr>
+                <td>...</td>
+                <td>...</td>
+                <td>...</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <article class="pane" style="border:solid red thin;background-color:yellow">
+        <h1>a Explorer 9</h1>
+        <p>Windows Internet Explorer 9（简称 IE9）于 2011 年 3 月 14 日发布.....</p>
+    </article>
+
+    <article class="pane" style="border:solid red thin;background-color:yellow">
+        <h1>b Explorer 9</h1>
+        <p>Windows Internet Explorer 9（简称 IE9）于 2011 年 3 月 14 日发布.....</p>
+    </article>
+
+    <article class="pane" style="border:solid red thin;background-color:yellow">
+        <h1>c Explorer 9</h1>
+        <p>Windows Internet Explorer 9（简称 IE9）于 2011 年 3 月 14 日发布.....</p>
+    </article>
     
-        <table id="pai">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Surname</th>
-                    <th>Age</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>John</td>
-                    <td>Smith</td>
-                    <td>10</td>
-                </tr>
-                <tr>
-                    <td>Pete</td>
-                    <td>Brown</td>
-                    <td>15</td>
-                </tr>
-                <tr>
-                    <td>Ann</td>
-                    <td>Lee</td>
-                    <td>5</td>
-                </tr>
-                <tr>
-                    <td>...</td>
-                    <td>...</td>
-                    <td>...</td>
-                </tr>
-            </tbody>
-        </table>
+    <script>
+        var dataset = [];
+        for (let i = 0; i < 50; ++i) {
+            let yRange = Math.random() * 100;
+            dataset.push(yRange);
+        }
+        var w = 1000;
+        var h = 200;
+        var svg = d3.select("body").select("svg")
+            .attr("width", w).attr("height", h);
 
-        <article class = "pane" style = "border:solid red thin;background-color:yellow">
-            <h1>a Explorer 9</h1>
-            <p>Windows Internet Explorer 9（简称 IE9）于 2011 年 3 月 14 日发布.....</p>
-          </article>
+        var margin = {
+            top: 20,
+            bottom: 20,
+            left: 30,
+            right: 30 //rangeBands([margin.left,w-margin.right],0.05) --更改为d3.scaleBand().domain(d3.range(dataset.length)).rangeRound([margin.left, w-margin.right]).padding(0.1); 
+        }
+        var xScale = d3.scaleBand().domain(d3.range(dataset.length)).rangeRound([margin.left, w - margin.right])
+            .padding(0.1);
+        var yScale = d3.scaleLinear().domain([0, d3.max(dataset)]).range([h - margin.bottom, margin.top]).nice();
+        svg.selectAll("rect").data(dataset).enter().append("rect")
+            .attr("x", (d, i) => {
+                return xScale(i)
+            })
+            .attr("y", (d) => {
+                return h - margin.bottom - yScale(d)
+            })
+            .attr("width", xScale.bandwidth)
+            .attr("height", (d) => {
+                return yScale(d)
+            })
+            .attr("fill", (d) => {
+                return `rgb(${d},0,0)`
+            });
+        svg.selectAll("text").data(dataset).enter().append("text").text((d) => {
+                return Math.round(d)
+            })
+            .attr("class", "text")
+            .attr("fill", "white").attr("x", (d, i) => {
+                return xScale(i) + xScale.bandwidth() / 2
+            })
+            .attr("y", (d) => {
+                return h - margin.bottom - yScale(d) + 15
+            })
+            .attr("text-anchor", "middle");
+        var aXis = d3.axisBottom(xScale).ticks(20);
+        var aYis = d3.axisLeft(yScale).ticks(5);
+        svg.append("g").attr("transform", `translate(0,${h-margin.bottom})`).call(aXis);
+        svg.append("g").attr("transform", `translate(${margin.left},0)`).call(aYis);
+        d3.select("body").select("p.button").on("click", () => {
+            for (let i = 0; i < 50; ++i) {
+                let yRange = Math.random() * 100;
+                dataset[i] = yRange;
+            }
+            //新版d3.easeLinear
+            svg.selectAll("rect").data(dataset).transition().duration(1000).ease(d3.easeBounce)
+                .attr("y", (d) => {
+                    return h - margin.bottom - yScale(d)
+                })
+                .attr("height", (d) => {
+                    return yScale(d)
+                }).attr("fill", (d) => {
+                    return `rgb(0,${d},0)`
+                });
+            svg.selectAll("text").data(dataset).text((d) => {
+                    return Math.round(d)
+                })
+                .attr("y", (d) => {
+                    return h - margin.bottom - yScale(d) + 15
+                });
+        });
+    </script>
+    <script>
+        function display() {
+            let key = true;
+            return function () {
+                if (key) {
+                    text.style.display = 'none';
+                    ele.innerHTML = "none-display";
+                } else {
+                    text.style.display = '';
+                    ele.innerHTML = "display";
+                }
+                key = !key;
+            }
+        }
+        ele.onclick = display();
 
-          <article class = "pane" style = "border:solid red thin;background-color:yellow">
-            <h1>b Explorer 9</h1>
-            <p>Windows Internet Explorer 9（简称 IE9）于 2011 年 3 月 14 日发布.....</p>
-          </article>
+        function change(event) {
+            let left = Math.round(event.clientX - filed.offsetLeft - filed.clientLeft - ball.clientWidth / 2);
+            let top = Math.round(event.clientY - filed.offsetTop - filed.clientTop - ball.clientHeight / 2);
+            if (left < 0) left = 0;
+            if (top < 0) top = 0;
+            if (left > filed.clientWidth - ball.clientWidth) left = filed.clientWidth - ball.clientWidth;
+            if (top > filed.clientHeight - ball.clientHeight) top = filed.clientHeight - ball.clientHeight;
+            ball.style.left = left + 'px';
+            ball.style.top = top + 'px';
+        }
+        var isAN = true;
 
-          <article class = "pane" style = "border:solid red thin;background-color:yellow">
-            <h1>c Explorer 9</h1>
-            <p>Windows Internet Explorer 9（简称 IE9）于 2011 年 3 月 14 日发布.....</p>
-          </article>
-
-        <script>
-            function display(){
-                let key = true;
-                return function(){
-                    if(key){
-                        text.style.display = 'none';
-                        ele.innerHTML= "none-display";
-                    }else{
-                        text.style.display = '';
-                        ele.innerHTML= "display";                  
-                    }
-                    key = !key;
-                }
+        function zhedie(event) {
+            if (isAN) {
+                menu.style.display = "none";
+            } else {
+                menu.style.display = "";
             }
-            ele.onclick = display();
-            function change(event){
-                let left = Math.round(event.clientX - filed.offsetLeft - filed.clientLeft - ball.clientWidth / 2);
-                let top = Math.round(event.clientY- filed.offsetTop - filed.clientTop - ball.clientHeight / 2);
-                if(left<0) left = 0; if(top<0) top = 0;
-                if(left>filed.clientWidth - ball.clientWidth) left = filed.clientWidth - ball.clientWidth;
-                if(top> filed.clientHeight - ball.clientHeight) top = filed.clientHeight - ball.clientHeight;
-                ball.style.left = left+ 'px';
-                ball.style.top = top + 'px';
+            isAN = !isAN;
+        }
+        let paneAll = document.body.querySelectorAll(".pane");
+        for (let pane of paneAll) {
+            pane.insertAdjacentHTML("afterbegin", '<button class="remove-button" style = "float:right">[x]</button>');
+        }
+        let closeAll = document.body.querySelectorAll(".remove-button");
+        for (let close of closeAll) {
+            close.onclick = function () {
+                close.parentNode.remove();
             }
-            var isAN = true;
-            function zhedie(event){
-                if(isAN){
-                    menu.style.display = "none";
-                }
-                else{
-                    menu.style.display = "";
-                }
-                isAN = !isAN;
+        }
+        var MAX_LI = pictureul.querySelectorAll("li").length;
+        up.onclick = function () {
+            if (parseInt(pictureul.style.marginLeft) + 315 <= 0) {
+                pictureul.style.marginLeft = parseInt(pictureul.style.marginLeft) + 315 + "px";
             }
-            let paneAll = document.body.querySelectorAll(".pane");
-            for(let pane of paneAll){
-                pane.insertAdjacentHTML("afterbegin", '<button class="remove-button" style = "float:right">[x]</button>');
+        }
+        down.onclick = function () {
+            if (parseInt(pictureul.style.marginLeft) - 315 > -MAX_LI * 105) {
+                pictureul.style.marginLeft = parseInt(pictureul.style.marginLeft) - 315 + "px";
             }
-            let closeAll = document.body.querySelectorAll(".remove-button");
-            for(let close of closeAll){
-                close.onclick = function(){
-                    close.parentNode.remove();
-                }
-            }
-            var MAX_LI = pictureul.querySelectorAll("li").length;
-            up.onclick = function(){
-                if(parseInt(pictureul.style.marginLeft) + 315 <= 0){
-                    pictureul.style.marginLeft = parseInt(pictureul.style.marginLeft)+315 + "px";
-                }
-            }
-            down.onclick = function(){
-                if(parseInt(pictureul.style.marginLeft) - 315 > -MAX_LI*105){
-                    pictureul.style.marginLeft = parseInt(pictureul.style.marginLeft) - 315 + "px";
-                }
-            }
+        }
 
 
-            /////////////上一天
-                    //列表树的建立
+        /////////////上一天
+        //列表树的建立
         let data = {
             "Fish": {
                 "trout": {},
@@ -420,6 +505,8 @@
 
             return message;
         }
-        </script>
-    </body>
+    </script>
+
+</body>
+
 </html>
